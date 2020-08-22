@@ -1,0 +1,65 @@
+.container
+  .row.mb-5
+    .col-12
+      .card
+        .card-header
+          %h3 Actions I need to take
+        .card-body
+          .list-group
+            - if @payment_requests_needing_my_approval.empty?
+              Yay, you are all caught up
+            - else
+              .table-responsive
+                %table.table.table-striped
+                  %thead
+                    %tr
+                      %th{:scope => "col"} Status
+                      %th{:scope => "col"} Description
+                      %th{:scope => "col"} Amount
+                      %th{:scope => "col"} Actions
+                  %tbody
+
+                    - @payment_requests_needing_my_approval.each do |request|
+                      %tr
+                        %td
+                          = request.status&.titleize
+                        %td
+                          = request.description
+                        %td
+                          = number_to_currency(request.amount)
+                        %td.text-right
+                          = link_to "approve", "#", class: 'text-primary'
+                          %br
+                          = link_to "decline", "#", class: 'text-danger'
+
+
+  .row
+    .col-12
+      .card
+        .card-header
+          .float-left
+            %h3 Requests I created
+          .float-right
+            = link_to new_payment_request_path do
+              .btn.btn-success Create Request
+        .card-body
+          .list-group
+            .table-responsive
+              %table.table.table-striped
+                %thead
+                  %tr
+                    %th{:scope => "col"} Status
+                    %th{:scope => "col"} Description
+                    %th{:scope => "col"} Amount
+                    %th{:scope => "col"} Approvers
+                %tbody
+                  - @payment_requests_i_created.each do |request|
+                    %tr
+                      %td
+                        = request.status&.titleize
+                      %td
+                        = request.description
+                      %td
+                        = number_to_currency(request.amount)
+                      %td
+                        = request.approvers.map{|u| u.email }

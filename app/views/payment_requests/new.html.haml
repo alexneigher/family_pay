@@ -1,0 +1,26 @@
+.container
+  .row.justify-content-center
+    .col-8
+      .card
+        .card-body
+          %h4 New Payment Request
+          = form_for :payment_request, url: payment_requests_path, method: :post do |f|
+            .form-group
+              %label Description
+              = f.text_field :description, class: 'form-control', placeholder: 'I need a new glider'
+            .form-group
+              %label Amount
+              = f.text_field :amount, class: 'form-control', placeholder: '10'
+
+            .form-group
+              %label Approver(s)
+              %br
+              - User.all.each do |user|
+                - next if user == current_user
+                %label
+                  = check_box_tag 'payment_request[approvers][]', user.id
+                  = user.email
+                %br
+
+            .form-group
+              = f.submit "Create & Send", class: 'btn btn-success'
