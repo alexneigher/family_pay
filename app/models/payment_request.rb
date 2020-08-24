@@ -3,4 +3,8 @@ class PaymentRequest < ApplicationRecord
   has_many :payment_request_users
   has_many :approvers, through: :payment_request_users, source: :user
 
+  def self.without_status
+    self.joins(:payment_request_users).where(payment_request_users:{status:nil}).uniq
+  end
+
 end

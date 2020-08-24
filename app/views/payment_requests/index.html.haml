@@ -28,9 +28,10 @@
                         %td
                           = number_to_currency(request.amount)
                         %td.text-right
-                          = link_to "approve", "#", class: 'text-primary'
-                          %br
-                          = link_to "decline", "#", class: 'text-danger'
+                          - id = request.payment_request_users.where(user_id:current_user.id).first.id
+                          = link_to "approve", payment_request_user_path(id, status:"approved"), method: :put, class: 'text-primary'
+                          |
+                          = link_to "decline", payment_request_user_path(id, status:"declined"), method: :put, class: 'text-danger'ç
 
 
   .row

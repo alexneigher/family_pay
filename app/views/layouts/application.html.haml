@@ -17,5 +17,7 @@
         - else
           = link_to('Sign In', new_user_session_path)
 
-
+    -if flash[:error].present?
+      .alert.alert-danger
+        = flash[:error]
     = yield
